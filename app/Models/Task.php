@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
+use App\Enums\TaskPriority;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 
-class Task extends Model
+class Task extends \Eloquent
 {
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasFactory;
@@ -14,8 +14,7 @@ class Task extends Model
 		'id',
 	];
 
-	public function user() {
-		return $this->belongsTo(User::class);
+	public function type(): TaskPriority {
+		return TaskPriority::from($this->type);
 	}
-
 }

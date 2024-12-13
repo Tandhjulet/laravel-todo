@@ -20,7 +20,6 @@ return new class extends Migration
 			$table->timestamp("at");
 			$table->mediumText("description");
 			$table->enum("type", array_column(TaskPriority::cases(), 'value'));
-			$table->foreignIdFor(User::class);
             $table->timestamps();
         });
     }

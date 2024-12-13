@@ -7,10 +7,10 @@ use Livewire\Component;
 
 class ViewTask extends Component
 {
-    public function render()
+    public function render(Task $task)
     {
         return view('livewire.view-task')->with([
-			'task' => Task::all()
+			'task' => $task,
 		]);
     }
 }

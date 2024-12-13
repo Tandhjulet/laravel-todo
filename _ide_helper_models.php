@@ -20,10 +20,8 @@ namespace App\Models{
  * @property string $at
  * @property string $description
  * @property string $type
- * @property int $user_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User|null $user
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newQuery()
@@ -35,7 +33,6 @@ namespace App\Models{
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUserId($value)
  */
 	class Task extends \Eloquent {}
 }
