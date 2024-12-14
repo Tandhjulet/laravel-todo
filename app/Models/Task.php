@@ -17,4 +17,5 @@ class Task extends \Eloquent
 	public function type(): TaskPriority {
 		return TaskPriority::from($this->type);
 	}
+
 }

@@ -1,11 +1,24 @@
 <div x-data="{
 	editModalActive: false,
-	task: null,
+	task: {
+		name: '',
+		description: '',
+		id: 0,
+		type: '',
+	},
 
 	editTask(task) {
-		this.task = task;
+		this.task = task ?? this.resetTask;
 		this.editModalActive = task != null;
-	}
+	},
+	get resetTask() {
+		return {
+			name: '',
+			description: '',
+			id: 0,
+			type: '',
+		}
+	},
 }">
 	<table class="border-spacing-3 border-separate w-full table-fixed">
 		<tr>
@@ -38,34 +51,41 @@
 		</tbody>
 	</table>
 
-	<form
+	<div
 		x-show="editModalActive"
 		class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 shadow-xl flex flex-col border rounded-xl"
-		@click.outside="editTask(null)"
-		wire:submit="update"
 	>
 		<h1 class="font-bold">Rediger form</h1>
 		<span>Bestem det nye navn, beskrivelse og prioritet!</span>
 
 		<label for="title" class="text-sm mt-1">Titel</label>
-		<input :value="editModalActive && task.name" name="title" id="title" class="border rounded-md p-1" />
+		<input
+			:value="editModalActive && task.name"
+			name="title"
+			id="title"
+			class="border rounded-md p-1"
+			x-model="task.name"
+		/>
+		<span>@error('form.name') {{ $message }} @enderror</span>
 
 		<label for="type" class="text-sm mt-1">Prioritet</label>
-		<select name="type" id="type" class="border rounded-md p-1">
+		<select x-model="task.type" name="type" id="type" class="border rounded-md p-1">
 			@php /** @var App\Enums\TaskPriority $type */ @endphp
 			@foreach ($types as $type)
-				<option value="{{$type}}">{{$type}}</option>
+				<option value="{{$type}}" x-bind:selected="task.type == '{{ $type->name }}'.toLowerCase()">{{$type}}</option>
 			@endforeach
 		</select>
 
 		<label for="description" class="text-sm mt-1">Beskrivelse</label>
 		<textarea
-			:value="editModalActive && task.description"
+			:value="task && task.description"
 			name="description"
 			rows="4"
 			id="description"
-			class="border rounded-md p-1">
-		</textarea>
+			class="border rounded-md p-1"
+			x-model="task.description"
+		></textarea>
+		<span>@error('form.description') {{ $message }} @enderror</span>
 
 		<div class="inline-flex justify-between">
 			<button
@@ -78,12 +98,13 @@
 
 			<button
 				class="bg-blue-600 w-fit px-4 py-2 text-white rounded-lg mt-4"
-				x-on:click="editTask(null);"
 				type="submit"
+				
+				x-on:click="task && $wire.update(task.name, task.description, task.type, task.id); console.log(task)"
 			>
 				Opdater
 			</button>
 		</div>
 
-	</form>
+	</div>
 </div>
