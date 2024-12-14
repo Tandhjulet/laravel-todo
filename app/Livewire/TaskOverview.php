@@ -9,26 +9,32 @@ use Livewire\Component;
 
 class TaskOverview extends Component
 {	
+	public $newName = '';
+	public $newType = '';
+	public $newDescription = '';
+
 	public function delete(Task $task) {
 		Task::whereId($task->id)->delete();
 	}
 
 	protected function rules() {
 		return [
-			'task.name' => 'required|string|min:6',
-			'task.description' => 'required|string|min:20',
-			'task.type' => new Enum(TaskPriority::class),
+			'newName' => 'required|string|min:5|max:63',
+			'newDescription' => 'required|string|min:20',
+			'newType' => new Enum(TaskPriority::class),
 		];
 	}
 
-	public function update($name, $description, $type, $id) {
+	public function update($id) {
+		$this->validate();
+
 		Task::query()->whereId($id)->update([
-			'name' => $name,
-			'description' => $description,
-			'type' => $type,
+			'name' => $this->newName,
+			'description' => $this->newDescription,
+			'type' => $this->newType,
 		]);
 
-		//dd($name, $description, $type, $id);
+		//dd($id);
 	}
 
     public function render()

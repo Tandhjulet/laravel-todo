@@ -10,6 +10,11 @@
 	editTask(task) {
 		this.task = task ?? this.resetTask;
 		this.editModalActive = task != null;
+		if(task) {
+			$wire.newType = task.type;
+			$wire.newDescription = task.description;
+			$wire.newName = task.name;
+		}
 	},
 	get resetTask() {
 		return {
@@ -51,9 +56,11 @@
 		</tbody>
 	</table>
 
-	<div
+	<form
 		x-show="editModalActive"
+
 		class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 shadow-xl flex flex-col border rounded-xl"
+		wire:submit="update(task.id)"
 	>
 		<h1 class="font-bold">Rediger form</h1>
 		<span>Bestem det nye navn, beskrivelse og prioritet!</span>
@@ -64,12 +71,18 @@
 			name="title"
 			id="title"
 			class="border rounded-md p-1"
-			x-model="task.name"
+			wire:model="newName"
 		/>
-		<span>@error('form.name') {{ $message }} @enderror</span>
+		<span>@error('newName') {{ $message }} @enderror</span>
 
 		<label for="type" class="text-sm mt-1">Prioritet</label>
-		<select x-model="task.type" name="type" id="type" class="border rounded-md p-1">
+		<select
+			x-model="task.type"
+			name="type"
+			id="type"
+			class="border rounded-md p-1"
+			wire:model="newType"
+		>
 			@php /** @var App\Enums\TaskPriority $type */ @endphp
 			@foreach ($types as $type)
 				<option value="{{$type}}" x-bind:selected="task.type == '{{ $type->name }}'.toLowerCase()">{{$type}}</option>
@@ -83,9 +96,9 @@
 			rows="4"
 			id="description"
 			class="border rounded-md p-1"
-			x-model="task.description"
+			wire:model="newDescription"
 		></textarea>
-		<span>@error('form.description') {{ $message }} @enderror</span>
+		<span>@error('newDescription') {{ $message }} @enderror</span>
 
 		<div class="inline-flex justify-between">
 			<button
@@ -99,12 +112,10 @@
 			<button
 				class="bg-blue-600 w-fit px-4 py-2 text-white rounded-lg mt-4"
 				type="submit"
-				
-				x-on:click="task && $wire.update(task.name, task.description, task.type, task.id); console.log(task)"
 			>
 				Opdater
 			</button>
 		</div>
 
-	</div>
+	</form>
 </div>
