@@ -58,6 +58,7 @@
 
 	<form
 		x-show="editModalActive"
+		x-on:modal-close.window="editTask(null)"
 
 		class="absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 p-4 shadow-xl flex flex-col border rounded-xl"
 		wire:submit="update(task.id)"

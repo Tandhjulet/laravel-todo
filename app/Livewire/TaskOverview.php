@@ -34,6 +34,9 @@ class TaskOverview extends Component
 			'type' => $this->newType,
 		]);
 
+		session()->flash('success', 'Opdatede task');
+		$this->dispatch('modal-close');
+
 		//dd($id);
 	}
 
